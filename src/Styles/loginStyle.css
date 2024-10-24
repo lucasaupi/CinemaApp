@@ -1,0 +1,36 @@
+
+.auth-wrapper {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    height: 100vh;
+}
+.btn-primary {
+    background-color: #444444;
+    border-color: #444444;
+    color: white;
+    
+}
+.auth-wrapper .form-control {
+    margin-bottom: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #555555;
+    border-color: #555555;
+}
+
+.auth-inner {
+    margin-top: 10px;
+    width: 400px;
+    background: #f0f0f0;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.small-input {
+    width: 100%;
+    max-width: 300px;
+}
+
