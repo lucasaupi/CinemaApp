@@ -4,18 +4,24 @@
         <div class="container">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <router-link class="nav-link" to="/login">Login</router-link>
+              <router-link class="nav-link" to="/">Home</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/Login">Login</router-link>
             </li>
             <li class="nav-item">
               <a class="nav-link disabled" href="#">Contacto</a>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/">Home</router-link>
-            </li>
           </ul>
         </div>
       </div>
-    <router-view />
+      <router-view />
+  <div v-if="$route.path === '/'">
+    <div id="welcome-message">
+      <h1>Bienvenidos a CINE ORT</h1>
+      <p>Elegi tu película:</p>
+    </div>
+  </div>
   </div>
 </template>
 
@@ -31,13 +37,36 @@ export default {
 * {
   box-sizing: border-box;
 }
-
-body {
-  background: #1C8Ef9 !important;
-  min-height: 100vh;
-  display: flex;
-  font-weight: 400;
+#welcome-message {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5px;
+    background-color: transparent;
+    text-align: center;
 }
+
+#welcome-message h1 {
+    font-family: 'Cinzel', cursive;
+    font-size: 4rem;
+    color: rgb(197, 168, 109);
+    margin-bottom: 10px; 
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6), 
+                 4px 4px 0 rgba(0, 0, 0, 0.5), 
+                 6px 6px 0 rgba(0, 0, 0, 0.4);
+    transform: translateZ(0);
+}
+
+#welcome-message p {
+    font-family: 'Cinzel', cursive;
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6), 
+                 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+
 
 h1, h2, h3, h4, h5, h6, label, span {
   font-weight: 500;
@@ -53,10 +82,6 @@ body, html, #app, #root, .auth-wrapper {
   text-align: center;
 }
 
-.navbar-light {
-  background-color: #ffffff;
-  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
-}
 
 .auth-wrapper {
   display: flex;
