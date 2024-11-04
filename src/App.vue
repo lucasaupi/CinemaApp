@@ -16,12 +16,6 @@
         </div>
       </div>
       <router-view />
-  <div v-if="$route.path === '/'">
-    <div id="welcome-message">
-      <h1>Bienvenidos a CINE ORT</h1>
-      <p>Elegi tu película:</p>
-    </div>
-  </div>
   </div>
 </template>
 
@@ -38,8 +32,8 @@ export default {
   box-sizing: border-box;
 }
 #welcome-message {
-    position: absolute;
-    top: 25%;
+    position: relative;
+    top: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 5px;

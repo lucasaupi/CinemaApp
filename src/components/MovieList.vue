@@ -1,4 +1,8 @@
 <template>
+    <div id="welcome-message">
+      <h1>Bienvenidos a CINE ORT</h1>
+      <p>Elegi tu película:</p>
+    </div>
     <div>
       <h2>Cartelera de Películas</h2>
       <div class="movie-list">
@@ -47,6 +51,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
+    
   }
   .movie-item {
     text-align: center;
