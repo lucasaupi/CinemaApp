@@ -51,7 +51,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    
+    color: whitesmoke;
   }
   .movie-item {
     text-align: center;
