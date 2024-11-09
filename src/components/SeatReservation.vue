@@ -24,14 +24,18 @@
   <script>
   import { ref, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
+  import axios from 'axios';
+  import apiService from '../services/apiService';
   
   export default {
     setup() {
-        const seats = ref(Array.from({ length: 20 }, (_, i) => ({ available: Math.random() > 0.3 })));
-        const selectedSeats = ref([]);
-        const ticketCount = ref(1);
-      const route = useRoute();
-      const movieId = ref(route.params.id);
+      const seats = ref(Array.from({ length: 20 }, () => ({ available: true })));
+    const selectedSeats = ref([]);
+    const ticketCount = ref(1);
+    const route = useRoute();
+    const movieId = ref(route.params.id);
+    const reservas = ref([]);
+    const nuevaReserva = ref({ movieId: '', asientos: [] });
 
       const toggleSeat = (index) => {
       const seatAvailable = seats.value[index].available;
@@ -50,13 +54,30 @@
       }
     };
 
-    const confirmSelection = () => {
+    const confirmSelection = async () => {
       if (selectedSeats.value.length === ticketCount.value) {
-        selectedSeats.value.forEach(seat => {
-          seats.value[seat].available = false; // Marcar como reservado
-        });
-        alert('Reservas confirmadas: ' + selectedSeats.value.join(', '));
-        selectedSeats.value = []; // Reiniciar selección
+        try {
+          // Actualizamos `nuevaReserva` con `movieId` y `selectedSeats`
+          nuevaReserva.value = {
+            movieId: movieId.value,
+            asientos: selectedSeats.value,
+          };
+
+          // Llamamos a `apiService` para crear la reserva
+          const response = await apiService.createReserva(nuevaReserva.value);
+          reservas.value.push(response.data);
+          console.log('Reserva exitosa:', response.data);
+
+          // Marcar los asientos seleccionados como no disponibles
+          selectedSeats.value.forEach(seat => {
+            seats.value[seat].available = false;
+          });
+
+          alert('Reservas confirmadas: ' + selectedSeats.value.join(', '));
+          selectedSeats.value = []; // Reiniciar selección después de la confirmación
+        } catch (error) {
+          console.error('Error al hacer la reserva:', error);
+        }
       } else {
         alert('Debes seleccionar ' + ticketCount.value + ' asientos.');
       }
