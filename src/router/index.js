@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../components/login.vue';
-import HomePage from '../views/HomePage.vue';
+import HomePage from '../Views/HomePage.vue';
 import MovieList from '../components/MovieList.vue';
 import SeatReservation from '../components/SeatReservation.vue';
 
