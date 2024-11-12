@@ -45,8 +45,14 @@ export default {
 
                 const user = respuesta.data.find(u => u.email === this.email && u.password === this.password);
                 if (user) {
-                    login();  // Actualizamos el estado global de autenticación
-                    this.$router.push('/');  // Redirigimos al home
+                    localStorage.setItem('userToken', 'some-token');
+                    const selectedMovieId = localStorage.getItem('selectedMovieId'); // Recupera el ID de la película
+                    localStorage.removeItem('selectedMovieId'); // // Redirigimos al home
+
+                    const route = selectedMovieId
+                        ? `/reservation/${selectedMovieId}`
+                        : (this.$route.query.redirectTo || '/');
+                    this.$router.push(route);
                 } else {
                     this.errorMessage = 'Usuario o password incorrecto';
                 }

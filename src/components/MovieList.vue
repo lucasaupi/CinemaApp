@@ -53,6 +53,7 @@ export default {
       if (isAuthenticated()) {
         router.push({ name: 'SeatReservation', params: { id: movieId } });
       } else {
+        localStorage.setItem('selectedMovieId', movieId);
         router.push({ name: 'Login', query: { redirectTo: `/reservation/${movieId}` } });
       }
     };
