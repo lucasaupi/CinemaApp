@@ -39,14 +39,14 @@ export default {
   methods: {
     handleLogout() {
       logout();
-      this.$router.push('/'); // Redirige al home después de hacer logout
+      this.$router.push('/');
     },
   },
   setup() {
     // Limpiar el token y restablecer el estado de autenticación al montar el componente
     onMounted(() => {
-      localStorage.removeItem('userToken'); // Eliminar el token
-      authState.isAuthenticated = false;    // Restablecer la autenticación a falso
+      localStorage.removeItem('userToken');
+      authState.isAuthenticated = false;
     });
   },
 };
