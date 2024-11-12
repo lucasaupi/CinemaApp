@@ -13,7 +13,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
-            <p v-if="errorMessage"> {{ errorMessage }} </p>
+            <p v-if="errorMessage">{{ errorMessage }}</p>
         </div>
     </div>
 </template>
@@ -21,45 +21,49 @@
 <script>
 import { ref } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { login } from '../auth';
 
 export default {
     name: 'Login',
-    data() {
-        return {
-            email: '',
-            password: '',
-            errorMessage: '',
-        };
-    },
-    methods: {
-        async handleLogin() {
+    setup() {
+        const email = ref('');
+        const password = ref('');
+        const errorMessage = ref('');
+        const router = useRouter();
+        const route = useRoute();
+
+        const handleLogin = async () => {
             try {
                 const respuesta = await axios.get('https://672f6ea666e42ceaf15db204.mockapi.io/users/users', {
                     params: {
-                        email: this.email,
-                        password: this.password,
+                        email: email.value,
+                        password: password.value,
                     },
                 });
 
-                const user = respuesta.data.find(u => u.email === this.email && u.password === this.password);
+                const user = respuesta.data.find(u => u.email === email.value && u.password === password.value);
                 if (user) {
-                    localStorage.setItem('userToken', 'some-token');
-                    const selectedMovieId = localStorage.getItem('selectedMovieId'); // Recupera el ID de la película
-                    localStorage.removeItem('selectedMovieId'); // // Redirigimos al home
+                    login(); // Actualizamos el estado global de autenticación
 
-                    const route = selectedMovieId
-                        ? `/reservation/${selectedMovieId}`
-                        : (this.$route.query.redirectTo || '/');
-                    this.$router.push(route);
+                    // Redirección después de autenticación
+                    const redirectTo = route.query.redirectTo || '/';
+                    const selectedMovieId = localStorage.getItem('selectedMovieId');
+                    if (selectedMovieId) {
+                        router.push(`/reservation/${selectedMovieId}`);
+                        localStorage.removeItem('selectedMovieId'); // Limpia el ID guardado
+                    } else {
+                        router.push(redirectTo); // Redirige al componente correspondiente
+                    }
                 } else {
-                    this.errorMessage = 'Usuario o password incorrecto';
+                    errorMessage.value = 'Usuario o password incorrecto';
                 }
             } catch (error) {
-                this.errorMessage = 'Error de conexión';
+                errorMessage.value = 'Error de conexión';
             }
-        },
+        };
+
+        return { email, password, errorMessage, handleLogin };
     },
 };
 </script>
