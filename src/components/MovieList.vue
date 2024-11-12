@@ -30,30 +30,28 @@ export default {
     const movies = ref([]);
     const apiKey = '5877a1fcce98c7eafa67a3b52a7117b4';
     const apiUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=es`;
-    const router = useRouter(); 
-    const userToken = localStorage.getItem('userToken');
+    const router = useRouter();
 
     const fetchMovies = async () => {
       try {
-        const response = await axios.get(apiUrl); 
-        movies.value = response.data.results; 
+        const response = await axios.get(apiUrl);
+        movies.value = response.data.results;
       } catch (error) {
-        console.error('Error al obtener las películas:', error); 
+        console.error('Error al obtener las películas:', error);
       }
     };
 
     onMounted(fetchMovies);
 
-
     const isAuthenticated = () => {
-      return userToken !== null;
+      return localStorage.getItem('userToken') !== null;
     };
 
     const handleReserveClick = (movieId) => {
       if (isAuthenticated()) {
         router.push({ name: 'SeatReservation', params: { id: movieId } });
       } else {
-        localStorage.setItem('selectedMovieId', movieId);
+        localStorage.setItem('selectedMovieId', movieId); // Guarda el ID
         router.push({ name: 'Login', query: { redirectTo: `/reservation/${movieId}` } });
       }
     };
@@ -97,5 +95,4 @@ export default {
 .reserve-button:hover {
   background-color: rgba(197, 168, 109, 0.2);
 }
-
 </style>
