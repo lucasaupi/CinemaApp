@@ -25,9 +25,9 @@
   </div>
 </template>
 
-
 <script>
 import { authState, logout } from './auth';
+import { onMounted } from 'vue';
 
 export default {
   name: 'App',
@@ -39,12 +39,18 @@ export default {
   methods: {
     handleLogout() {
       logout();
-      this.$router.push('/');
+      this.$router.push('/'); // Redirige al home después de hacer logout
     },
+  },
+  setup() {
+    // Limpiar el token y restablecer el estado de autenticación al montar el componente
+    onMounted(() => {
+      localStorage.removeItem('userToken'); // Eliminar el token
+      authState.isAuthenticated = false;    // Restablecer la autenticación a falso
+    });
   },
 };
 </script>
-
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
