@@ -5,7 +5,6 @@ import MovieList from '../components/MovieList.vue';
 import SeatReservation from '../components/SeatReservation.vue';
 
 const routes = [
-
   {
     path: '/homepage',
     name: 'Home',
@@ -24,10 +23,22 @@ const routes = [
   { 
     path: '/reservation/:id', 
     name: 'SeatReservation', 
-    component: SeatReservation 
+    component: SeatReservation,
+    beforeEnter: (to, from, next) => {
+      // Verificar si el usuario tiene el token en localStorage
+      const token = localStorage.getItem('userToken');
+      if (token) {
+        // Si el token está presente, permitir el acceso
+        next();
+      } else {
+        // Si no está logueado, redirigir al login
+        next({ name: 'Login' });
+      }
+    }
   },
 ];
 
+// Crear el router
 const router = createRouter({
   history: createWebHistory(),
   routes,
