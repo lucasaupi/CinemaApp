@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import { errorMessages } from "vue/compiler-sfc";
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import "../Styles/loginStyle.css";
-import axios from "axios";
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import { login } from '../auth';
+
 export default {
     name: 'Login',
     data() {
@@ -35,29 +35,25 @@ export default {
     },
     methods: {
         async handleLogin() {
-            try{
-                const respuesta= await axios.get('https://672f6ea666e42ceaf15db204.mockapi.io/users/users',{
+            try {
+                const respuesta = await axios.get('https://672f6ea666e42ceaf15db204.mockapi.io/users/users', {
                     params: {
                         email: this.email,
-                        password: this.password
-                        
-                    }
-                    
+                        password: this.password,
+                    },
                 });
-                console.log(respuesta)
-                const user = respuesta.data.find(u=> u.email === this.email && u.password === this.password);
-                if (user) {
-                    this.$router.push('/SeatReservation');
 
+                const user = respuesta.data.find(u => u.email === this.email && u.password === this.password);
+                if (user) {
+                    login();  // Actualizamos el estado global de autenticación
+                    this.$router.push('/');  // Redirigimos al home
                 } else {
-                    this.errorMessage='Usuario o password incorrecto';
+                    this.errorMessage = 'Usuario o password incorrecto';
                 }
-            } catch (error){
+            } catch (error) {
                 this.errorMessage = 'Error de conexión';
             }
-            
-        }
-    }
-}
+        },
+    },
+};
 </script>
-
