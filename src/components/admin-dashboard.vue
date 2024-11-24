@@ -2,7 +2,6 @@
   <div class="admin-dashboard">
     <h1>Panel de Administración</h1>
 
-    <!-- Gráficas -->
     <div class="charts-container">
       <div class="chart">
         <BarChart v-if="barChartData" :chart-data="barChartData" :chart-options="barChartOptions" />
@@ -12,7 +11,6 @@
       </div>
     </div>
 
-    <!-- Tabla de resumen por película -->
     <h2>Resumen por Película</h2>
     <table class="movie-summary">
       <thead>
@@ -65,7 +63,6 @@ export default {
 
     const fetchAdminData = async () => {
       try {
-        // Llamada al servicio de reservas
         const response = await reservasService.getReservas();
         const reservations = response.data;
 
@@ -74,10 +71,8 @@ export default {
           return;
         }
 
-        // Calcular estadísticas usando la capacidad fija
         const movieStats = calculateMovieStatistics(reservations, TOTAL_SEATS);
 
-        // Llamada a la API de películas
         const apiKey = '5877a1fcce98c7eafa67a3b52a7117b4';
         const movieDataResponse = await axios.get(
           `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=es`
@@ -89,7 +84,6 @@ export default {
           movieMap[movie.id] = movie.title;
         });
 
-        // Enriquecer los datos con títulos de películas
         const enrichedStats = movieStats.map(stat => ({
           ...stat,
           title: movieMap[stat.movieId] || 'Desconocida',
@@ -97,7 +91,6 @@ export default {
 
         movies.value = enrichedStats;
 
-        // Preparar datos para las gráficas
         const barLabels = enrichedStats.map(movie => movie.title);
         const barData = enrichedStats.map(movie => movie.totalReservations);
 
@@ -144,20 +137,17 @@ export default {
 </script>
 
 <style scoped>
-/* Estilo general del panel de administración */
 .admin-dashboard {
   padding: 20px;
   font-family: Arial, sans-serif;
 }
 
-/* Contenedor de las tarjetas de KPIs */
 .kpi-container {
   display: flex;
   gap: 20px;
   margin-bottom: 30px;
 }
 
-/* Tarjetas individuales de KPIs */
 .kpi-card {
   background: #2a2a2a;
   color: #fff;
@@ -167,7 +157,6 @@ export default {
   flex: 1;
 }
 
-/* Estilo para los gráficos */
 .charts-container {
   display: flex;
   gap: 30px;
@@ -181,7 +170,6 @@ export default {
   border-radius: 8px;
 }
 
-/* Tabla de resumen */
 .movie-summary {
   width: 100%;
   border-collapse: collapse;

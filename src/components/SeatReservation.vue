@@ -1,14 +1,10 @@
 <template>
-    <div>
-      <h2>Reserva de Asientos para la Película ID: {{ movieId }}</h2>
-      <div class="seats">
-      <div
-        v-for="(seat, index) in seats"
-        :key="index"
-        :class="{'seat': true, 'available': seat.available, 'booked': !seat.available, 'selected': selectedSeats.includes(index)}"
-        @click="toggleSeat(index)"
-        :style="{ cursor: seat.available ? 'pointer' : 'not-allowed' }"
-      ></div>
+  <div>
+    <h2>Reserva de Asientos para la Película ID: {{ movieId }}</h2>
+    <div class="seats">
+      <div v-for="(seat, index) in seats" :key="index"
+        :class="{ 'seat': true, 'available': seat.available, 'booked': !seat.available, 'selected': selectedSeats.includes(index) }"
+        @click="toggleSeat(index)" :style="{ cursor: seat.available ? 'pointer' : 'not-allowed' }"></div>
     </div>
     <div>
       <label for="ticketCount">Entradas: </label>
@@ -19,17 +15,17 @@
       <button @click="confirmSelection">Confirmar Reserva</button>
     </div>
   </div>
-  </template>
-  
-  <script>
-  import { ref, onMounted } from 'vue';
-  import { useRoute } from 'vue-router';
-  import axios from 'axios';
-  import apiService from '../services/apiService';
-  
-  export default {
-    setup() {
-      const seats = ref(Array.from({ length: 20 }, () => ({ available: true })));
+</template>
+
+<script>
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import axios from 'axios';
+import apiService from '../services/apiService';
+
+export default {
+  setup() {
+    const seats = ref(Array.from({ length: 20 }, () => ({ available: true })));
     const selectedSeats = ref([]);
     const ticketCount = ref(1);
     const route = useRoute();
@@ -37,7 +33,7 @@
     const reservas = ref([]);
     const nuevaReserva = ref({ movieId: '', asientos: [] });
 
-      const toggleSeat = (index) => {
+    const toggleSeat = (index) => {
       const seatAvailable = seats.value[index].available;
       if (seatAvailable) {
         if (selectedSeats.value.includes(index)) {
@@ -57,18 +53,15 @@
     const confirmSelection = async () => {
       if (selectedSeats.value.length === ticketCount.value) {
         try {
-          // Actualizamos `nuevaReserva` con `movieId` y `selectedSeats`
           nuevaReserva.value = {
             movieId: movieId.value,
             asientos: selectedSeats.value,
           };
 
-          // Llamamos a `apiService` para crear la reserva
           const response = await apiService.createReserva(nuevaReserva.value);
           reservas.value.push(response.data);
           console.log('Reserva exitosa:', response.data);
 
-          // Marcar los asientos seleccionados como no disponibles
           selectedSeats.value.forEach(seat => {
             seats.value[seat].available = false;
           });
@@ -86,27 +79,25 @@
     const loadReservedSeats = async () => {
       try {
         const allReservas = await apiService.getReservas();
-       
 
         // Filtrar las reservas para la película actual
         const reservasForMovie = allReservas.data.filter(reserva => reserva.movieId === movieId.value);
-
 
         // Crear el array de asientos inicial
         seats.value = Array.from({ length: 20 }, (_, index) => ({
           available: !reservasForMovie.some(reserva => reserva.asientos.includes(index))
         }));
 
-        
+
       } catch (error) {
         console.error('Error al cargar las reservas:', error);
       }
     };
     onMounted(loadReservedSeats);
-      return { seats, selectedSeats, ticketCount, toggleSeat, confirmSelection, updateSelectedSeats,movieId };
-    },
-  };
-  </script>
+    return { seats, selectedSeats, ticketCount, toggleSeat, confirmSelection, updateSelectedSeats, movieId };
+  },
+};
+</script>
 
 <style>
 .seats {
@@ -114,11 +105,12 @@
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 }
+
 .seat {
   width: 60px;
   height: 50px;
   background-color: #ccc;
-  border-radius: 10px 10px 0 0; /* Respaldo redondeado */
+  border-radius: 10px 10px 0 0;
   position: relative;
   border: 2px solid #333;
   cursor: pointer;
@@ -127,7 +119,7 @@
 .seat::before {
   content: '';
   position: absolute;
-  top: -15px; /* Respaldo que sobresale */
+  top: -15px;
   left: 5px;
   right: 5px;
   height: 15px;
@@ -139,17 +131,18 @@
 }
 
 .seat:hover {
-  transform: scale(1.1); /* Aumenta el tamaño al pasar el ratón */
+  transform: scale(1.1);
 }
 
 .available {
   background-color: green;
 }
+
 .booked {
   background-color: red;
 }
+
 .selected {
   background-color: blue;
 }
 </style>
-  
