@@ -10,7 +10,7 @@
             <a class="nav-link disabled" href="#">Contacto</a>
           </li>
               <!-- implementación de dashboard-->
-              <li class="nav-item"> 
+              <li class="nav-item" v-if="isAdmin"> 
             <router-link class="nav-link" to="/admin-dashboard">Admin Dashboard</router-link>
           </li>
 
@@ -40,6 +40,9 @@ export default {
     isLoggedIn() {
       return authState.isAuthenticated;
     },
+    isAdmin(){
+      return authState.role === "admin";
+    }
   },
   methods: {
     handleLogout() {
@@ -52,6 +55,7 @@ export default {
     onMounted(() => {
       localStorage.removeItem('userToken');
       authState.isAuthenticated = false;
+      localStorage.removeItem('userRole');
     });
   },
 };
