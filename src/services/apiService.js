@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'https://672957ad6d5fa4901b6ce131.mockapi.io/cineort', // reemplaza 'your-endpoint' por tu URL de mockapi.io
+  baseURL: 'https://672957ad6d5fa4901b6ce131.mockapi.io/cineort', 
   headers: {
     'Content-Type': 'application/json',
   },

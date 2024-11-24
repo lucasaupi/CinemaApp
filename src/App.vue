@@ -1,27 +1,63 @@
 <template>
   <div id="app">
-      <div class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/">Home</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/Login">Login</router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#">Contacto</a>
-            </li>
-          </ul>
-        </div>
+    <div class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">Home</router-link>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Contacto</a>
+          </li>
+              <!-- implementación de dashboard-->
+              <li class="nav-item" v-if="isAdmin"> 
+            <router-link class="nav-link" to="/admin-dashboard">Admin Dashboard</router-link>
+          </li>
+
+        </ul>
+        
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item" v-if="!isLoggedIn">
+            <router-link class="nav-link" to="/Login">Login</router-link>
+          </li>
+          <li class="nav-item" v-if="isLoggedIn">
+            <button class="nav-link" @click="handleLogout">Logout</button>
+          </li>
+        </ul>
       </div>
-      <router-view />
+    </div>
+    <router-view />
   </div>
 </template>
 
 <script>
+import { authState, logout } from './auth';
+import { onMounted } from 'vue';
+
 export default {
   name: 'App',
+  computed: {
+    isLoggedIn() {
+      return authState.isAuthenticated;
+    },
+    isAdmin(){
+      return authState.role === "admin";
+    }
+  },
+  methods: {
+    handleLogout() {
+      logout();
+      this.$router.push('/');
+    },
+  },
+  setup() {
+    // Limpiar el token y restablecer el estado de autenticación al montar el componente
+    onMounted(() => {
+      localStorage.removeItem('userToken');
+      authState.isAuthenticated = false;
+      localStorage.removeItem('userRole');
+    });
+  },
 };
 </script>
 
@@ -60,8 +96,6 @@ export default {
                  2px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
-
-
 h1, h2, h3, h4, h5, h6, label, span {
   font-weight: 500;
   font-family: 'Fira Sans', sans-serif;
@@ -75,7 +109,6 @@ body, html, #app, #root, .auth-wrapper {
 #app {
   text-align: center;
 }
-
 
 .auth-wrapper {
   display: flex;

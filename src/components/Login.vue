@@ -13,26 +13,60 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
+            <p v-if="errorMessage">{{ errorMessage }}</p>
         </div>
     </div>
 </template>
 
 <script>
-import "../Styles/loginStyle.css";
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter, useRoute } from 'vue-router';
+import { login } from '../auth';
+
 export default {
     name: 'Login',
-    data() {
-        return {
-            email: '',
-            password: ''
-        };
-    },
-    methods: {
-        handleLogin() {
-            console.log('Email:', this.email);
-            console.log('Password:', this.password);
-        }
-    }
-}
-</script>
+    setup() {
+        const email = ref('');
+        const password = ref('');
+        const errorMessage = ref('');
+        const router = useRouter();
+        const route = useRoute();
 
+        const handleLogin = async () => {
+            try {
+                const respuesta = await axios.get('https://672f6ea666e42ceaf15db204.mockapi.io/users/users', {
+                    params: {
+                        email: email.value,
+                        password: password.value,
+                    },
+                });
+
+                // Buscar el usuario con las credenciales proporcionadas
+                const user = respuesta.data.find(u => u.email === email.value && u.password === password.value);
+                
+                if (user) {
+                    // Llamar a login con el token y rol (Categoria) del usuario
+                    login(user.token, user.Categoria); // Actualizamos el estado global de autenticación
+
+                    // Redirección después de autenticación
+                    const redirectTo = route.query.redirectTo || '/';
+                    const selectedMovieId = localStorage.getItem('selectedMovieId');
+                    if (selectedMovieId) {
+                        router.push(`/reservation/${selectedMovieId}`);
+                        localStorage.removeItem('selectedMovieId'); // Limpia el ID guardado
+                    } else {
+                        router.push(redirectTo); // Redirige al componente correspondiente
+                    }
+                } else {
+                    errorMessage.value = 'Usuario o password incorrecto';
+                }
+            } catch (error) {
+                errorMessage.value = 'Error de conexión';
+            }
+        };
+
+        return { email, password, errorMessage, handleLogin };
+    },
+};
+</script>

@@ -72,6 +72,7 @@
           selectedSeats.value.forEach(seat => {
             seats.value[seat].available = false;
           });
+          console.log(localStorage.getItem('userRole'))
 
           alert('Reservas confirmadas: ' + selectedSeats.value.join(', '));
           selectedSeats.value = []; // Reiniciar selección después de la confirmación
@@ -82,6 +83,26 @@
         alert('Debes seleccionar ' + ticketCount.value + ' asientos.');
       }
     };
+    const loadReservedSeats = async () => {
+      try {
+        const allReservas = await apiService.getReservas();
+       
+
+        // Filtrar las reservas para la película actual
+        const reservasForMovie = allReservas.data.filter(reserva => reserva.movieId === movieId.value);
+
+
+        // Crear el array de asientos inicial
+        seats.value = Array.from({ length: 20 }, (_, index) => ({
+          available: !reservasForMovie.some(reserva => reserva.asientos.includes(index))
+        }));
+
+        
+      } catch (error) {
+        console.error('Error al cargar las reservas:', error);
+      }
+    };
+    onMounted(loadReservedSeats);
       return { seats, selectedSeats, ticketCount, toggleSeat, confirmSelection, updateSelectedSeats,movieId };
     },
   };
@@ -115,6 +136,10 @@
   border-top-right-radius: 10px;
   border: 2px solid #333;
   border-bottom: none;
+}
+
+.seat:hover {
+  transform: scale(1.1); /* Aumenta el tamaño al pasar el ratón */
 }
 
 .available {

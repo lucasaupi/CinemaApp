@@ -48,6 +48,7 @@
   </template>
   
   <script>
+
  import { ref, onMounted } from 'vue';
 import reservasService from '../services/apiService'; // Importamos el servicio
 import { calculateMovieStatistics } from '../services/estadisticasService'; // Importamos el servicio de estadísticas
@@ -133,6 +134,7 @@ export default {
     };
   },
 };
+
   </script>
   
   <style scoped>
