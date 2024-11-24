@@ -9,6 +9,11 @@
           <li class="nav-item">
             <a class="nav-link disabled" href="#">Contacto</a>
           </li>
+              <!-- implementación de dashboard-->
+              <li class="nav-item"> 
+            <router-link class="nav-link" to="/admin-dashboard">Admin Dashboard</router-link>
+          </li>
+
         </ul>
         
         <ul class="navbar-nav ml-auto">

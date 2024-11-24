@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Login from '../components/login.vue';
+import Login from '../components/Login.vue';
 import HomePage from '../Views/HomePage.vue';
 import MovieList from '../components/MovieList.vue';
 import SeatReservation from '../components/SeatReservation.vue';
+import Dashboard from '../components/admin-dashboard.vue';
 
 const routes = [
   {
@@ -35,6 +36,11 @@ const routes = [
         next({ name: 'Login' });
       }
     }
+  },
+  {
+    path: '/admin-dashboard',
+  name: 'Dashboard',
+    component: Dashboard,
   },
 ];
 

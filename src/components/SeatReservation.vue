@@ -137,6 +137,10 @@
   border-bottom: none;
 }
 
+.seat:hover {
+  transform: scale(1.1); /* Aumenta el tamaño al pasar el ratón */
+}
+
 .available {
   background-color: green;
 }
