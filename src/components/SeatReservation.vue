@@ -72,6 +72,7 @@
           selectedSeats.value.forEach(seat => {
             seats.value[seat].available = false;
           });
+          console.log(localStorage.getItem('userRole'))
 
           alert('Reservas confirmadas: ' + selectedSeats.value.join(', '));
           selectedSeats.value = []; // Reiniciar selección después de la confirmación

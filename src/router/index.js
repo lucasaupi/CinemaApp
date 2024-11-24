@@ -4,6 +4,7 @@ import HomePage from '../Views/HomePage.vue';
 import MovieList from '../components/MovieList.vue';
 import SeatReservation from '../components/SeatReservation.vue';
 import Dashboard from '../components/admin-dashboard.vue';
+import { authState } from '../auth';
 
 const routes = [
   {
@@ -39,9 +40,18 @@ const routes = [
   },
   {
     path: '/admin-dashboard',
-  name: 'Dashboard',
+    name: 'Dashboard',
     component: Dashboard,
-  },
+    beforeEnter: (to, from, next) => {
+      if (authState.isAuthenticated && authState.role === 'admin') {
+        // Si el usuario tiene el rol de admin, permitir el acceso
+        next();
+      } else {
+        // Si no tiene el rol adecuado, redirigir al login o home
+        next({ name: 'Login' });
+      }
+    },
+  }
 ];
 
 // Crear el router

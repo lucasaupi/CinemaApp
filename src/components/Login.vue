@@ -42,9 +42,12 @@ export default {
                     },
                 });
 
+                // Buscar el usuario con las credenciales proporcionadas
                 const user = respuesta.data.find(u => u.email === email.value && u.password === password.value);
+                
                 if (user) {
-                    login(); // Actualizamos el estado global de autenticación
+                    // Llamar a login con el token y rol (Categoria) del usuario
+                    login(user.token, user.Categoria); // Actualizamos el estado global de autenticación
 
                     // Redirección después de autenticación
                     const redirectTo = route.query.redirectTo || '/';
