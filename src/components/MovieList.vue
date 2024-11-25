@@ -10,7 +10,6 @@
         <img :src="`https://image.tmdb.org/t/p/w200${movie.poster_path}`" :alt="movie.title" />
         <h3>{{ movie.title }}</h3>
         <p>{{ movie.overview }}</p>
-        <!-- Botón para redirigir según autenticación -->
         <button @click="handleReserveClick(movie.id)" class="reserve-button">
           Reservar Asientos
         </button>
