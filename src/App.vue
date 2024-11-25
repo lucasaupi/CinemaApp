@@ -49,12 +49,26 @@ export default {
   },
   setup() {
     onMounted(() => {
-      const token = localStorage.getItem('userToken');
-      const role = localStorage.getItem('userRole');
+      const serverStarted = sessionStorage.getItem('serverStarted');
 
-      if (token && role) {
-        authState.isAuthenticated = true;
-        authState.role = role;
+      if (!serverStarted) {
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userRole');
+        authState.isAuthenticated = false;
+        authState.role = null;
+
+        sessionStorage.setItem('serverStarted', 'true');
+      } else {
+        const token = localStorage.getItem('userToken');
+        const role = localStorage.getItem('userRole');
+
+        if (token && role) {
+          authState.isAuthenticated = true;
+          authState.role = role;
+        } else {
+          authState.isAuthenticated = false;
+          authState.role = null;
+        }
       }
     });
   },
