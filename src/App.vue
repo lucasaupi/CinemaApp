@@ -9,13 +9,10 @@
           <li class="nav-item">
             <a class="nav-link disabled" href="#">Contacto</a>
           </li>
-              <!-- implementación de dashboard-->
-              <li class="nav-item" v-if="isAdmin"> 
+          <li class="nav-item" v-if="isAdmin">
             <router-link class="nav-link" to="/admin-dashboard">Admin Dashboard</router-link>
           </li>
-
         </ul>
-        
         <ul class="navbar-nav ml-auto">
           <li class="nav-item" v-if="!isLoggedIn">
             <router-link class="nav-link" to="/Login">Login</router-link>
@@ -40,7 +37,7 @@ export default {
     isLoggedIn() {
       return authState.isAuthenticated;
     },
-    isAdmin(){
+    isAdmin() {
       return authState.role === "admin";
     }
   },
@@ -51,11 +48,14 @@ export default {
     },
   },
   setup() {
-    // Limpiar el token y restablecer el estado de autenticación al montar el componente
     onMounted(() => {
-      localStorage.removeItem('userToken');
-      authState.isAuthenticated = false;
-      localStorage.removeItem('userRole');
+      const token = localStorage.getItem('userToken');
+      const role = localStorage.getItem('userRole');
+
+      if (token && role) {
+        authState.isAuthenticated = true;
+        authState.role = role;
+      }
     });
   },
 };
@@ -67,41 +67,53 @@ export default {
 * {
   box-sizing: border-box;
 }
+
 #welcome-message {
-    position: relative;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 5px;
-    background-color: transparent;
-    text-align: center;
+  position: relative;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 5px;
+  background-color: transparent;
+  text-align: center;
 }
 
 #welcome-message h1 {
-    font-family: 'Cinzel', cursive;
-    font-size: 4rem;
-    color: rgb(197, 168, 109);
-    margin-bottom: 10px; 
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6), 
-                 4px 4px 0 rgba(0, 0, 0, 0.5), 
-                 6px 6px 0 rgba(0, 0, 0, 0.4);
-    transform: translateZ(0);
+  font-family: 'Cinzel', cursive;
+  font-size: 4rem;
+  color: rgb(197, 168, 109);
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6),
+    4px 4px 0 rgba(0, 0, 0, 0.5),
+    6px 6px 0 rgba(0, 0, 0, 0.4);
+  transform: translateZ(0);
 }
 
 #welcome-message p {
-    font-family: 'Cinzel', cursive;
-    font-size: 2rem;
-    color: rgba(255, 255, 255, 0.8);
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6), 
-                 2px 2px 0 rgba(0, 0, 0, 0.5);
+  font-family: 'Cinzel', cursive;
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6),
+    2px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
-h1, h2, h3, h4, h5, h6, label, span {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+label,
+span {
   font-weight: 500;
   font-family: 'Fira Sans', sans-serif;
 }
 
-body, html, #app, #root, .auth-wrapper {
+body,
+html,
+#app,
+#root,
+.auth-wrapper {
   width: 100%;
   height: 100%;
 }

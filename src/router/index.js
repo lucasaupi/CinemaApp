@@ -27,13 +27,10 @@ const routes = [
     name: 'SeatReservation', 
     component: SeatReservation,
     beforeEnter: (to, from, next) => {
-      // Verificar si el usuario tiene el token en localStorage
       const token = localStorage.getItem('userToken');
       if (token) {
-        // Si el token está presente, permitir el acceso
         next();
       } else {
-        // Si no está logueado, redirigir al login
         next({ name: 'Login' });
       }
     }
@@ -44,10 +41,8 @@ const routes = [
     component: Dashboard,
     beforeEnter: (to, from, next) => {
       if (authState.isAuthenticated && authState.role === 'admin') {
-        // Si el usuario tiene el rol de admin, permitir el acceso
         next();
       } else {
-        // Si no tiene el rol adecuado, redirigir al login o home
         next({ name: 'Login' });
       }
     },

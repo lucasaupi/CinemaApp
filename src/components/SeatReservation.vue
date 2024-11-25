@@ -22,6 +22,7 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import apiService from '../services/apiService';
+import "../Styles/seatReservation.css";
 
 export default {
   setup() {
@@ -80,14 +81,11 @@ export default {
       try {
         const allReservas = await apiService.getReservas();
 
-        // Filtrar las reservas para la película actual
         const reservasForMovie = allReservas.data.filter(reserva => reserva.movieId === movieId.value);
 
-        // Crear el array de asientos inicial
         seats.value = Array.from({ length: 20 }, (_, index) => ({
           available: !reservasForMovie.some(reserva => reserva.asientos.includes(index))
         }));
-
 
       } catch (error) {
         console.error('Error al cargar las reservas:', error);
@@ -98,51 +96,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.seats {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-}
-
-.seat {
-  width: 60px;
-  height: 50px;
-  background-color: #ccc;
-  border-radius: 10px 10px 0 0;
-  position: relative;
-  border: 2px solid #333;
-  cursor: pointer;
-}
-
-.seat::before {
-  content: '';
-  position: absolute;
-  top: -15px;
-  left: 5px;
-  right: 5px;
-  height: 15px;
-  background-color: inherit;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border: 2px solid #333;
-  border-bottom: none;
-}
-
-.seat:hover {
-  transform: scale(1.1);
-}
-
-.available {
-  background-color: green;
-}
-
-.booked {
-  background-color: red;
-}
-
-.selected {
-  background-color: blue;
-}
-</style>

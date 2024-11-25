@@ -23,6 +23,7 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import "../Styles/movieList.css";
 
 export default {
   name: 'MovieList',
@@ -60,39 +61,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.movie-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  color: rgb(197, 168, 109);
-}
-#movie-list-title {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 2rem;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-}
-.movie-item {
-  text-align: center;
-}
-.movie-item img {
-  max-width: 100%;
-  border-radius: 8px;
-}
-.reserve-button {
-  background-color: rgba(197, 168, 109, 0.6);
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.reserve-button:hover {
-  background-color: rgba(197, 168, 109, 0.2);
-}
-</style>
