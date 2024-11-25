@@ -40,6 +40,7 @@ import Chart from 'chart.js/auto';
 import reservasService from '../services/apiService';
 import { calculateMovieStatistics } from '../services/estadisticasService';
 import axios from 'axios';
+import "../Styles/admin-Dashboard.css";
 
 export default {
   components: { BarChart, PieChart },
@@ -135,58 +136,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.admin-dashboard {
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-.kpi-container {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.kpi-card {
-  background: #2a2a2a;
-  color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  flex: 1;
-}
-
-.charts-container {
-  display: flex;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.chart {
-  flex: 1;
-  background: #f4f4f4;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-.movie-summary {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.movie-summary th,
-.movie-summary td {
-  padding: 10px;
-  border: 1px solid #ddd;
-  text-align: left;
-}
-
-.movie-summary th {
-  background: #f0f0f0;
-}
-
-.movie-summary tbody tr:nth-child(even) {
-  background: #f9f9f9;
-}
-</style>
