@@ -49,7 +49,6 @@ const routes = [
   }
 ];
 
-// Crear el router
 const router = createRouter({
   history: createWebHistory(),
   routes,

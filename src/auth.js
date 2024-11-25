@@ -1,22 +1,20 @@
 import { reactive } from 'vue';
 
 export const authState = reactive({
-  isAuthenticated: localStorage.getItem('userToken') !== null, // Verifica si el token existe
-  role: localStorage.getItem('userRole'), // Verifica si hay un rol almacenado
+  isAuthenticated: localStorage.getItem('userToken') !== null,
+  role: localStorage.getItem('userRole'),
 });
 
-// Función de login
 export const login = (token, role) => {
   authState.isAuthenticated = true;
-  authState.role = role; // Guarda el rol del usuario
-  localStorage.setItem('userToken', token); // Guarda el token real
-  localStorage.setItem('userRole', role); // Guarda el rol del usuario
+  authState.role = role;
+  localStorage.setItem('userToken', token);
+  localStorage.setItem('userRole', role);
 };
 
-// Función de logout
 export const logout = () => {
   authState.isAuthenticated = false;
-  authState.role = null; // Limpia el rol
-  localStorage.removeItem('userToken'); // Elimina el token del localStorage
-  localStorage.removeItem('userRole'); // Elimina el rol del localStorage
+  authState.role = null;
+  localStorage.removeItem('userToken');
+  localStorage.removeItem('userRole');
 };

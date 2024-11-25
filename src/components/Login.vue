@@ -9,7 +9,8 @@
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input v-model="password" type="password" class="form-control small-input" placeholder="Password" required>
+                    <input v-model="password" type="password" class="form-control small-input" placeholder="Password"
+                        required>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
@@ -41,22 +42,18 @@ export default {
                         password: password.value,
                     },
                 });
-
-                // Buscar el usuario con las credenciales proporcionadas
                 const user = respuesta.data.find(u => u.email === email.value && u.password === password.value);
-                
-                if (user) {
-                    // Llamar a login con el token y rol (Categoria) del usuario
-                    login(user.token, user.Categoria); // Actualizamos el estado global de autenticación
 
-                    // Redirección después de autenticación
+                if (user) {
+                    login(user.token, user.Categoria);
+
                     const redirectTo = route.query.redirectTo || '/';
                     const selectedMovieId = localStorage.getItem('selectedMovieId');
                     if (selectedMovieId) {
                         router.push(`/reservation/${selectedMovieId}`);
-                        localStorage.removeItem('selectedMovieId'); // Limpia el ID guardado
+                        localStorage.removeItem('selectedMovieId');
                     } else {
-                        router.push(redirectTo); // Redirige al componente correspondiente
+                        router.push(redirectTo);
                     }
                 } else {
                     errorMessage.value = 'Usuario o password incorrecto';
